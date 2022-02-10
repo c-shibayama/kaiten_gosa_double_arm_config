@@ -1,0 +1,24 @@
+controller_list:
+  - name: fake_jitu_kukan_arm_controller
+    type: $(arg execution_type)
+    joints:
+      - joint1
+      - joint2
+      - joint3
+      - joint4
+      - joint5
+      - joint6
+  - name: fake_sensa_kukan_arm_controller
+    type: $(arg execution_type)
+    joints:
+      - shifted_joint1
+      - shifted_joint2
+      - shifted_joint3
+      - shifted_joint4
+      - shifted_joint5
+      - shifted_joint6
+initial:  # Define initial robot poses.
+  - group: jitu_kukan_arm
+    pose: jitu_kukan_start
+  - group: sensa_kukan_arm
+    pose: sensa_kukan_start
