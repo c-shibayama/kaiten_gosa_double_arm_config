@@ -39,25 +39,41 @@ planner_configs:
     range: 0.0  # Max motion added to tree. ==> maxDistance_ default: 0.0, if 0.0, set on setup()
   RRTstar:
     type: geometric::RRTstar
+    optimization_objective: MaximizeMinClearanceObjective
     range: 0.0  # Max motion added to tree. ==> maxDistance_ default: 0.0, if 0.0, set on setup()
     goal_bias: 0.05  # When close to goal select goal, with this probability? default: 0.05
     delay_collision_checking: 1  # Stop collision checking as soon as C-free parent found. default 1
   TRRT:
+  
     type: geometric::TRRT
-    range: 0.0  # Max motion added to tree. ==> maxDistance_ default: 0.0, if 0.0, set on setup()
+    optimization_objective: MechanicalWorkOptimizationObjective  #
+                                                                 # 利用不可:  MaximizeMinClearanceObjective
+                                                                 # default:　MechanicalWorkOptimizationObjective
+                                                                 # 利用可:  PathLengthOptimizationObjective, StateCostIntegralObjective, MinimaxObjective
+    range: 0.0  # Max motion added to tree. ==> maxDistance_ default: 0.0, if 0.0, set on setup() 
+                # プランナーが使用することになっている範囲，アルゴリズムの実行時間に大きく影響，モーションツリーに追加されるモーションの最大長．
     goal_bias: 0.05  # When close to goal select goal, with this probability? default: 0.05
+                     # 状態空間の状態をランダムに選択して進む過程で，アルゴリズムは実際に実際の目標を選択する場合がある．この確率（0~1）その値は通常0.05前後で，大きすぎないようにする必要がある．デフォルト値をおすすめ
     max_states_failed: 10  # when to start increasing temp. default: 10
+                           # 温度を上昇させる失敗回数．上昇を開始するタイミング
     temp_change_factor: 2.0  # how much to increase or decrease temp. default: 2.0
+                             # 式exp(T_rate)の値．遷移テストが失敗するたびに温度はこの係数で上昇
     min_temperature: 10e-10  # lower limit of temp change. default: 10e-10
+                             # tempの最小値．下限値
     init_temperature: 10e-6  # initial temperature. default: 10e-6
+                             # tempの初期値
     frountier_threshold: 0.0  # dist new state to nearest neighbor to disqualify as frontier. default: 0.0 set in setup()
+                              # フロンティア状態として認定される古い状態と新しい状態の間の距離
     frountierNodeRatio: 0.1  # 1/10, or 1 nonfrontier for every 10 frontier. default: 0.1
+                             # フロンティアノードに対する非フロンティアノードの目標比率ρ．非フロンティアノードの比率が与えられた最大値ρよりも大きくなる場合、構成は木に挿入されない
     k_constant: 0.0  # value used to normalize expresssion. default: 0.0 set in setup()
+                     # 確率パラメータPのための定数K．正規化するための定数の初期値．実際には探索開始前に開始姿勢と目標姿勢の平均値で与えられる．（Kは使用しなくなったので0）
   PRM:
     type: geometric::PRM
     max_nearest_neighbors: 10  # use k nearest neighbors. default: 10
   PRMstar:
     type: geometric::PRMstar
+    optimization_objective: MaximizeMinClearanceObjective
   FMT:
     type: geometric::FMT
     num_samples: 1000  # number of states that the planner should sample. default: 1000
