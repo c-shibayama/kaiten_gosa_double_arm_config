@@ -1,3 +1,5 @@
+センサ空間・実空間の2つのマニピュレータをRvizで表示
+
 配置
 ~/ws_moveit/src/kaiten_gosa_double_arm_config
 実行コマンド
